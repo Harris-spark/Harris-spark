@@ -1,0 +1,40 @@
+import json
+
+class RestaurantReviewSystem:
+    def _init_(self, filename='reviews.json'):
+        self.filename = filename
+        self.reviews = self.load_reviews()
+
+    def load_reviews(self):
+        try:
+            with open(self.filename, 'r') as file:
+                return json.load(file)
+        except FileNotFoundError:
+            return {}
+
+    def save_reviews(self):
+        with open(self.filename, 'w') as file:
+            json.dump(self.reviews, file, indent=4)
+
+    def add_review(self):
+        restaurant = input("Enter the restaurant name: ")
+        rating = input("Enter your rating (1-5): ")
+        comment = input("Enter your review comment: ")
+        
+        if restaurant not in self.reviews:
+            self.reviews[restaurant] = []
+        
+        self.reviews[restaurant].append({
+            'rating': rating,
+            'comment': comment
+        })
+        self.save_reviews()
+        print("Review added successfully!")
+
+    def view_reviews(self):
+        restaurant = input("Enter the restaurant name to view reviews: ")
+        if restaurant in self.reviews:
+            for review in self.reviews[restaurant]:
+                print(f"Rating: {review['rating']}/5")
+                print(f"Comment: {review['comment']}")
+                print("-")
