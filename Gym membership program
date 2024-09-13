@@ -1,0 +1,65 @@
+class Member:
+    def _init_(self, member_id, name, membership_type):
+        self.member_id = member_id
+        self.name = name
+        self.membership_type = membership_type
+
+class Gym:
+    def _init_(self):
+        self.members = []
+        self.membership_fees = {
+            'basic': 30,    # Monthly fee in dollars
+            'premium': 50,
+            'vip': 70
+        }
+
+    def add_member(self, member_id, name, membership_type):
+        if membership_type not in self.membership_fees:
+            print(f"Invalid membership type: {membership_type}")
+            return
+        new_member = Member(member_id, name, membership_type)
+        self.members.append(new_member)
+        print(f"Member {name} added successfully.")
+
+    def display_members(self):
+        if not self.members:
+            print("No members found.")
+            return
+        for member in self.members:
+            print(f"ID: {member.member_id}, Name: {member.name}, Membership: {member.membership_type}")
+
+    def calculate_total_revenue(self):
+        total_revenue = 0
+        for member in self.members:
+            total_revenue += self.membership_fees[member.membership_type]
+        return total_revenue
+
+def main():
+    gym = Gym()
+    while True:
+        print("\nGym Membership Program")
+        print("1. Add Member")
+        print("2. Display Members")
+        print("3. Calculate Total Revenue")
+        print("4. Exit")
+        
+        choice = input("Enter your choice: ")
+        
+        if choice == '1':
+            member_id = input("Enter member ID: ")
+            name = input("Enter member name: ")
+            membership_type = input("Enter membership type (basic/premium/vip): ").lower()
+            gym.add_member(member_id, name, membership_type)
+        elif choice == '2':
+            gym.display_members()
+        elif choice == '3':
+            total_revenue = gym.calculate_total_revenue()
+            print(f"Total revenue: ${total_revenue}")
+        elif choice == '4':
+            print("Exiting the program.")
+            break
+        else:
+            print("Invalid choice. Please try again.")
+
+if _name_ == "_main_":
+    main()
